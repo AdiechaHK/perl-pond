@@ -1,0 +1,28 @@
+{
+  "name": "perl-pond",
+  "version": "1.0.0",
+  "description": "A basic game to share other's positive points, without disclosing your name (opposite game of fish pond)",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdiechaHK/perl-pond.git"
+  },
+  "keywords": [
+    "perlpond"
+  ],
+  "author": "Harikrushna V Adiecha <adiechahari@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AdiechaHK/perl-pond/issues"
+  },
+  "homepage": "https://github.com/AdiechaHK/perl-pond#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "pug": "^2.0.4",
+    "socket.io": "^2.3.0"
+  }
+}
