@@ -14,16 +14,20 @@ html
 
     #app
 
-      .container(v-show='!started') not started
+      .container(v-show='!done')
         h1 Waiting for connecting all players
         p Copy given url and share with players to connect
         hr
         ul#players
-          li(v-for="(k,p) in players", :class="{'me': p == playerId}") {{ players[p].name }}
-              button.btn.btn-default(@click="toggle(p)") {{ showing == p ? 'Hide': 'Show'}}
-              div(v-show="showing = p")
-                input(placeholder="Enter Perls of {{ players[p].name }}" v-model="perl")
-                button.btn.btn-default Add
+          li(v-for="(k,p) in players", :class="{'me': p == playerId}")
+            div {{ players[p].name }}
+              button.btn(v-if="p != playerId", :title="{'Expand': p != showing, 'Collaps': p == showing}", @click="toggle(p)") [{{ p == showing ? '-': '+' }}]
+            div(v-show="p == showing")
+              ul(v-if="perls.hasOwnProperty(p)")
+                li(v-for="(i,k) in perls[p]") {{ i }}
+                  button.btn(@click="removePerl(p,k)") [&times;]
+              input(v-model="perl")
+              button.btn.btn-sm.btn-primary(@click="addPerl(p)") Add Perl
         
         div(v-if="!joined")
           input(v-model="myname")
@@ -32,6 +36,8 @@ html
           button.btn.btn-success(@click='started = true') Done
 
 
+      .container(v-show="done")
+        h1 It's done
 
       .container {{ $data }}
 

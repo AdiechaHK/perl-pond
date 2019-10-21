@@ -28,6 +28,7 @@ function generateUid(n)
 var app = new Vue({
   el: '#app',
   data: {
+    done: false,
     joined: false,
     myname: 'Harikrushna',
     gameId: '',
@@ -35,7 +36,7 @@ var app = new Vue({
     showing: '',
     perl: '',
     players: [],
-    data: {}
+    perls: {}
   },
   mounted()
   {
@@ -55,6 +56,19 @@ var app = new Vue({
     toggle(p)
     {
       this.showing = this.showing == p ? '': p
+    },
+    addPerl(p)
+    {
+      if(!this.perls.hasOwnProperty(p)) this.perls[p] = [];
+      this.perls[p].push(this.perl);
+      this.perl = '';
+    },
+    removePerl(p, k)
+    {
+      console.log(p,k)
+      if(this.perls.hasOwnProperty(p)) {
+        this.perls[p] = this.perls[p].filter((item, index) => index != k)
+      }
     }
   }
 })
