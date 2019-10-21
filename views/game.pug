@@ -5,18 +5,34 @@ html
     script(src="https://code.jquery.com/jquery-3.4.1.slim.min.js", integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=", crossorigin="anonymous")
     link(rel="stylesheet", href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css", integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T", crossorigin="anonymous")
     script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js", integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM", crossorigin="anonymous")
+    script(src="https://cdn.jsdelivr.net/npm/vue@2.6.0")
     script(src="/socket.io/socket.io.js")
 
-  body
-    .container.text-center
-      h1 Connect
-      p Copy given url and share with players
+    link(rel="stylesheet", href="/css/game.css")
 
-    .container#players
+  body(game=key)
 
-    .container.text-center
-      button.btn.btn-success(type="button") Start Game
+    #app
+
+      .container(v-show='!started') not started
+        h1 Waiting for connecting all players
+        p Copy given url and share with players to connect
+        hr
+        ul#players
+          li(v-for="(k,p) in players", :class="{'me': p == playerId}") {{ players[p].name }}
+              button.btn.btn-default(@click="toggle(p)") {{ showing == p ? 'Hide': 'Show'}}
+              div(v-show="showing = p")
+                input(placeholder="Enter Perls of {{ players[p].name }}" v-model="perl")
+                button.btn.btn-default Add
+        
+        div(v-if="!joined")
+          input(v-model="myname")
+          button.btn.btn-success(@click='register()') Join
+        div.text-center(v-if="joined")
+          button.btn.btn-success(@click='started = true') Done
 
 
+
+      .container {{ $data }}
 
     script(src="/js/client.js")
