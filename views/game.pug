@@ -23,9 +23,9 @@ html
             div {{ players[p].name }}
               button.btn(v-if="p != playerId", :title="{'Expand': p != showing, 'Collaps': p == showing}", @click="toggle(p)") [{{ p == showing ? '-': '+' }}]
             div(v-show="p == showing")
-              ul(v-if="perls.hasOwnProperty(p)")
-                li(v-for="(i,k) in perls[p]") {{ i }}
-                  button.btn(@click="removePerl(p,k)") [&times;]
+              ul
+                li(v-for="(point, indx) in perls", v-if="point.to == p") {{ point.text }}
+                  button.btn(@click="removePerl(indx)") [&times;]
               input(v-model="perl")
               button.btn.btn-sm.btn-primary(@click="addPerl(p)") Add Perl
         

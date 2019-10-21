@@ -36,7 +36,7 @@ var app = new Vue({
     showing: '',
     perl: '',
     players: [],
-    perls: {}
+    perls: []
   },
   mounted()
   {
@@ -59,16 +59,16 @@ var app = new Vue({
     },
     addPerl(p)
     {
-      if(!this.perls.hasOwnProperty(p)) this.perls[p] = [];
-      this.perls[p].push(this.perl);
+      this.perls.push({
+        to: p,
+        from: this.playerId,
+        text: this.perl
+      });
       this.perl = '';
     },
-    removePerl(p, k)
+    removePerl(k)
     {
-      console.log(p,k)
-      if(this.perls.hasOwnProperty(p)) {
-        this.perls[p] = this.perls[p].filter((item, index) => index != k)
-      }
+      this.perls.splice(k, 1)
     }
   }
 })
