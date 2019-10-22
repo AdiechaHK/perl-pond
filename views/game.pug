@@ -33,12 +33,25 @@ html
           input(v-model="myname")
           button.btn.btn-success(@click='register()') Join
         div.text-center(v-if="joined")
-          button.btn.btn-success(@click='started = true') Done
+          button.btn.btn-success(@click='complete()') Done
 
 
       .container(v-show="done")
-        h1 It's done
+        h1 {{ result.length ? 'Here is your pearls': 'Waiting for result'}}
 
-      .container {{ $data }}
+        ul(v-if="result.length")
+         li(v-for="prl in result" v-if="prl.to == playerId") {{ prl.text }}
+
+        div.row(v-else)
+          div.col-md-6
+            h3 Pending
+            ul
+              li(v-for="(k,p) in players" v-if="players[p].status != 'done'") {{ players[p].name }}
+          
+          div.col-md-6
+            h3 Completed
+            ul
+              li(v-for="(k,p) in players" v-if="players[p].status == 'done'") {{ players[p].name }}
+
 
     script(src="/js/client.js")

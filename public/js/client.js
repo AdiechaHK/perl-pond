@@ -36,7 +36,8 @@ var app = new Vue({
     showing: '',
     perl: '',
     players: [],
-    perls: []
+    perls: [],
+    result: []
   },
   mounted()
   {
@@ -45,6 +46,7 @@ var app = new Vue({
 
     // register socket listeners
     socket.on('player-list-update', (list) => this.players = list)
+    socket.on('all-done', (perls) => this.result = perls)
   },
   methods: {
     register()
@@ -56,6 +58,11 @@ var app = new Vue({
     toggle(p)
     {
       this.showing = this.showing == p ? '': p
+    },
+    complete()
+    {
+      this.done = true
+      socket.emit('done', this.perls)
     },
     addPerl(p)
     {

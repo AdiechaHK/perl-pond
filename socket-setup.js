@@ -24,7 +24,8 @@ function addPlayer(game, player)
   if(!data[game]['players'].hasOwnProperty(player.id))
   {
     data[game]['players'][player.id] = {
-      name: player.name
+      name: player.name,
+      status: 'joined'
     }
   }
 }
@@ -39,6 +40,28 @@ function removePlayer(game, player)
     }
   }
 }
+
+function updatePlayer(game, player, status)
+{
+  alldone = true;
+  for(pid in data[game]['players'])
+  {
+    if(pid == player) data[game]['players'][pid]['status'] = status
+    alldone = alldone && data[game]['players'][pid]['status'] == 'done'
+  }
+  return alldone
+}
+
+function addPerls(game, list)
+{
+  data[game]['perls'] = data[game]['perls'].concat(list)
+}
+
+function getPerls(game)
+{
+  return data[game]['perls']
+}
+
 
 module.exports = function(io)
 {
@@ -59,6 +82,21 @@ module.exports = function(io)
       removePlayer(socket.gid, socket.puid)
       if (socket.puid != null) io.emit('user-disconnected', socket.puid)
     });
+
+    socket.on('done', (list) => {
+      addPerls(socket.gid, list)
+      let allDone = updatePlayer(socket.gid, socket.puid, 'done')
+      console.log(socket.puid + " is done, -- ", alldone)
+      plist = collectPlayerList(socket.gid)
+      io.emit('player-list-update', plist)
+
+      console.log(data)
+      if(alldone)
+      {
+        perls = getPerls(socket.gid)
+        io.emit('all-done', perls)
+      }
+    })
 
   });
 }
